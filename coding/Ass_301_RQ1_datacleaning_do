@@ -1,0 +1,34 @@
+cd "D:\Class\5th Semester\Econometrics I\Assignment"
+
+//renaming
+
+rename CO2emissionsktENATMCO2E Co2Emissions
+
+. rename GDPpercapitaconstant2015US GDPPC
+
+. rename GDPconstant2015USNYGDP GDP
+
+rename Industryincludingconstruction industry_value
+
+. rename K industry_share
+
+//Dropping variables now
+
+drop if Co2Emissions==".."
+drop if industry_share==".."
+drop if GDPPC==".."
+drop if GDP==".."
+
+//Destring
+
+destring GDPPC, gen(GDP_PC)
+destring GDP, gen(GDPi)
+destring Co2Emissions, gen(Co2Emi)
+destring industry_share, gen(ind_share)
+
+//taking log
+gen logGDP = log(GDPi)
+gen logCo2Emi = log(Co2Emi)
+
+//running regression
+reg logCo2Emi logGDP GDP_PC ind_share
